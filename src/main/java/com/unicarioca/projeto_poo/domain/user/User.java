@@ -1,21 +1,22 @@
 package com.unicarioca.projeto_poo.domain.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.unicarioca.projeto_poo.domain.address.Address;
+import com.unicarioca.projeto_poo.domain.card.Card;
+import com.unicarioca.projeto_poo.domain.order.Order;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "user_tb")
+@Table(name = "users")
 @Entity
 public class User {
 
@@ -26,5 +27,16 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private String role;
+
+    @Enumerated(EnumType.STRING)
+    private UserCategory role;
+
+    @OneToMany
+    private List<Order> orders;
+
+    @OneToMany
+    private List<Address> addresses;
+
+    @OneToMany
+    private List<Card> cards;
 }
