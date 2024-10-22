@@ -31,12 +31,12 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserCategory role;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<Order> orders;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<Address> addresses;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<Card> cards;
 }

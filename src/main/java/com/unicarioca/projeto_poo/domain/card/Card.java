@@ -16,7 +16,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "payment_options")
+@Table(name = "cards")
 public class Card {
     @Id
     @GeneratedValue
