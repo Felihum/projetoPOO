@@ -10,10 +10,10 @@ CREATE TABLE orders (
     address_complement VARCHAR(100),
     order_date DATE NOT NULL,
     status VARCHAR(100),
-    id_user UUID,
+    id_client UUID,
     id_card UUID,
     id_address UUID,
-    FOREIGN KEY (id_user) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_client) REFERENCES clients(id) ON DELETE CASCADE,
     FOREIGN KEY (id_card) REFERENCES cards(id) ON DELETE SET NULL,
     FOREIGN KEY (id_address) REFERENCES addresses(id) ON DELETE SET NULL
 );

@@ -16,9 +16,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "users")
+@Table(name = "clients")
 @Entity
-public class User {
+public class Client {
 
     @Id
     @GeneratedValue
@@ -29,14 +29,14 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private UserCategory role;
+    private ClientCategory role;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "client")
     private List<Order> orders;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "client")
     private List<Address> addresses;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "client")
     private List<Card> cards;
 }

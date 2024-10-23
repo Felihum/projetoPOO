@@ -1,9 +1,8 @@
 package com.unicarioca.projeto_poo.domain.item;
 
 import com.unicarioca.projeto_poo.domain.order.Order;
-import com.unicarioca.projeto_poo.domain.order.OrderStatus;
 import com.unicarioca.projeto_poo.domain.product.Product;
-import com.unicarioca.projeto_poo.domain.user.User;
+import com.unicarioca.projeto_poo.domain.user.Client;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,8 +33,8 @@ public class Item {
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "id_user")
-    private User user;
+    @JoinColumn(name = "id_client")
+    private Client client;
 
     @ManyToOne
     @JoinColumn(name = "id_order")

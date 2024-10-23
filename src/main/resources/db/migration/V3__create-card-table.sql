@@ -6,6 +6,6 @@ CREATE TABLE cards (
     card_holder VARCHAR(100) NOT NULL,
     cvv INTEGER NOT NULL,
     validity_date DATE,
-    id_user UUID,
-    FOREIGN KEY (id_user) REFERENCES users(id) ON DELETE CASCADE
+    id_client UUID,
+    FOREIGN KEY (id_client) REFERENCES clients(id) ON DELETE CASCADE
 );

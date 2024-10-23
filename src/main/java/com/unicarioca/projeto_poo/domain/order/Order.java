@@ -3,7 +3,7 @@ package com.unicarioca.projeto_poo.domain.order;
 import com.unicarioca.projeto_poo.domain.address.Address;
 import com.unicarioca.projeto_poo.domain.card.Card;
 import com.unicarioca.projeto_poo.domain.item.Item;
-import com.unicarioca.projeto_poo.domain.user.User;
+import com.unicarioca.projeto_poo.domain.user.Client;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.nio.Buffer;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -38,8 +37,8 @@ public class Order {
     private OrderStatus status;
 
     @ManyToOne
-    @JoinColumn(name = "id_user")
-    private User user;
+    @JoinColumn(name = "id_client")
+    private Client client;
 
     @ManyToOne
     @JoinColumn(name = "id_address")

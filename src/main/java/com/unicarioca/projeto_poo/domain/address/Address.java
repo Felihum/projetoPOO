@@ -1,6 +1,6 @@
 package com.unicarioca.projeto_poo.domain.address;
 
-import com.unicarioca.projeto_poo.domain.user.User;
+import com.unicarioca.projeto_poo.domain.user.Client;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,6 +24,6 @@ public class Address {
     private String complement;
 
     @ManyToOne
-    @JoinColumn(name = "id_user")
-    private User user;
+    @JoinColumn(name = "id_client")
+    private Client client;
 }
