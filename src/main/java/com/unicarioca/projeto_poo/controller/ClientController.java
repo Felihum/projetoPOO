@@ -1,6 +1,7 @@
 package com.unicarioca.projeto_poo.controller;
 
 import com.unicarioca.projeto_poo.domain.user.Client;
+import com.unicarioca.projeto_poo.domain.user.ClientEditRequestDTO;
 import com.unicarioca.projeto_poo.domain.user.ClientRequestDTO;
 import com.unicarioca.projeto_poo.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,11 @@ public class ClientController {
         return ResponseEntity.ok(clientService.getClientById(idClient));
     }
 
+    @GetMapping("/findByEmail/{email}")
+    public ResponseEntity<Client> getClientByEmail(@PathVariable String email){
+        return ResponseEntity.ok(clientService.getClientByEmail(email));
+    }
+
     @PostMapping("/")
     public ResponseEntity<Client> createClient(@RequestBody ClientRequestDTO clientDTO){
         Client client = clientService.createClient(clientDTO);
@@ -33,7 +39,7 @@ public class ClientController {
     }
 
     @PutMapping("/{idClient}")
-    public ResponseEntity<Client> updateClient(@PathVariable UUID idClient, @RequestBody ClientRequestDTO userDTO){
+    public ResponseEntity<Client> updateClient(@PathVariable UUID idClient, @RequestBody ClientEditRequestDTO userDTO){
         return ResponseEntity.ok(clientService.updateClient(idClient, userDTO));
     }
 

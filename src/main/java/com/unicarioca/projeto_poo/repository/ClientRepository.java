@@ -10,6 +10,6 @@ import java.util.UUID;
 
 @Repository
 public interface ClientRepository extends JpaRepository<Client, UUID> {
-    @Query("SELECT c FROM clients c WHERE c.email LIKE %:email%")
+    @Query("SELECT c FROM Client c WHERE c.email LIKE %:email%")
     Client findClientByEmail(@Param("email") String email);
 }
