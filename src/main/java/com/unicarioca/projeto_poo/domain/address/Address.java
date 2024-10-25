@@ -1,5 +1,6 @@
 package com.unicarioca.projeto_poo.domain.address;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unicarioca.projeto_poo.domain.client.Client;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,8 +22,10 @@ public class Address {
     private UUID id;
 
     private String street;
+    private Integer number;
     private String complement;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_client")
     private Client client;

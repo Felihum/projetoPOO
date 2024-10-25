@@ -26,6 +26,7 @@ public class AddressService {
 
         address.setStreet(addressDTO.street());
         address.setComplement(addressDTO.complement());
+        address.setNumber(addressDTO.number());
         address.setClient(client);
 
         addressRepository.save(address);
@@ -37,6 +38,7 @@ public class AddressService {
         Address address = addressRepository.findById(idAddress).get();
 
         address.setStreet(addressDTO.street());
+        address.setNumber(addressDTO.number());
         address.setComplement(addressDTO.complement());
 
         addressRepository.saveAndFlush(address);
