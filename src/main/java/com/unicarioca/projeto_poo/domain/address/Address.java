@@ -1,6 +1,6 @@
 package com.unicarioca.projeto_poo.domain.address;
 
-import com.unicarioca.projeto_poo.domain.user.Client;
+import com.unicarioca.projeto_poo.domain.client.Client;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
