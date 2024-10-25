@@ -1,8 +1,8 @@
 package com.unicarioca.projeto_poo.controller;
 
-import com.unicarioca.projeto_poo.domain.user.Client;
-import com.unicarioca.projeto_poo.domain.user.ClientEditRequestDTO;
-import com.unicarioca.projeto_poo.domain.user.ClientRequestDTO;
+import com.unicarioca.projeto_poo.domain.client.Client;
+import com.unicarioca.projeto_poo.domain.client.ClientEditRequestDTO;
+import com.unicarioca.projeto_poo.domain.client.ClientRequestDTO;
 import com.unicarioca.projeto_poo.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.unicarioca.projeto_poo.domain.user;
+package com.unicarioca.projeto_poo.domain.client;
 
 import com.unicarioca.projeto_poo.domain.address.Address;
 import com.unicarioca.projeto_poo.domain.card.Card;

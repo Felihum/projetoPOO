@@ -1,6 +1,6 @@
 package com.unicarioca.projeto_poo.repository;
 
-import com.unicarioca.projeto_poo.domain.user.Client;
+import com.unicarioca.projeto_poo.domain.client.Client;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
