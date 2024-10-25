@@ -16,7 +16,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "categories")
-public class Catagory {
+public class ProductCatagory {
 
     @Id
     @GeneratedValue
