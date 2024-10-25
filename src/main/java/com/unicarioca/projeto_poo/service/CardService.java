@@ -39,8 +39,8 @@ public class CardService {
         return card;
     }
 
-    public Card updateCard(CardEditRequestDTO cardDTO){
-        Card card = new Card();
+    public Card updateCard(UUID idCard, CardEditRequestDTO cardDTO){
+        Card card = cardRepository.findById(idCard).get();
 
         card.setCard_number(cardDTO.card_number());
         card.setCard_holder(cardDTO.card_holder());
