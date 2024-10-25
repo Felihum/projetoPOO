@@ -1,6 +1,6 @@
 package com.unicarioca.projeto_poo.domain.card;
 
-import com.unicarioca.projeto_poo.domain.user.Client;
+import com.unicarioca.projeto_poo.domain.client.Client;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,7 +25,8 @@ public class Card {
     private BigInteger card_number;
     private String card_holder;
     private Integer cvv;
-    private Date validity_date;
+    private Integer validity_month;
+    private Integer validity_year;
 
     @ManyToOne
     @JoinColumn(name = "id_client")
