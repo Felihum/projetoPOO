@@ -1,9 +1,7 @@
 package com.unicarioca.projeto_poo.domain.product;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jdk.jfr.Category;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,8 +25,11 @@ public class Product {
     private BigDecimal price;
     private BigDecimal discount;
     private BigDecimal final_price;
-    private String category;
     private Integer storage_quantity;
     private String description;
     private String img_url;
+
+    @ManyToOne
+    @JoinColumn(name = "id_category")
+    private Category category;
 }
