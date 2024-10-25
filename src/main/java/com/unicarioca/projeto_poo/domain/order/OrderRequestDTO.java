@@ -4,5 +4,5 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
 
-public record OrderRequestDTO(BigDecimal price, BigDecimal discount, String description, Date order_date, String status, UUID id_user, UUID id_address, UUID id_card) {
+public record OrderRequestDTO(Float price, Integer discount, String description, Date order_date, String status, UUID id_client, UUID id_address, UUID id_card) {
 }

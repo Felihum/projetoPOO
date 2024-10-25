@@ -3,7 +3,7 @@ package com.unicarioca.projeto_poo.domain.order;
 import com.unicarioca.projeto_poo.domain.address.Address;
 import com.unicarioca.projeto_poo.domain.card.Card;
 import com.unicarioca.projeto_poo.domain.item.Item;
-import com.unicarioca.projeto_poo.domain.user.Client;
+import com.unicarioca.projeto_poo.domain.client.Client;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,10 +26,10 @@ public class Order {
     @GeneratedValue
     private UUID id;
 
-    private BigDecimal price;
+    private Float price;
 
-    private BigDecimal discount;
-    private BigDecimal final_price;
+    private Integer discount;
+    private Float final_price;
     private String description;
     private Date order_date;
 
