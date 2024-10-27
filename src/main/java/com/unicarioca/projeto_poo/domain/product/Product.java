@@ -1,9 +1,8 @@
 package com.unicarioca.projeto_poo.domain.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.unicarioca.projeto_poo.domain.category.ProductCatagory;
+import com.unicarioca.projeto_poo.domain.category.ProductCategory;
 import jakarta.persistence.*;
-import jdk.jfr.Category;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,5 +33,5 @@ public class Product {
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_category")
-    private ProductCatagory category;
+    private ProductCategory category;
 }

@@ -1,5 +1,6 @@
 package com.unicarioca.projeto_poo.domain.order;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unicarioca.projeto_poo.domain.address.Address;
 import com.unicarioca.projeto_poo.domain.card.Card;
 import com.unicarioca.projeto_poo.domain.item.Item;
@@ -36,6 +37,7 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_client")
     private Client client;
@@ -48,6 +50,6 @@ public class Order {
     @JoinColumn(name = "id_card")
     private Card card;
 
-    @OneToMany
+    @OneToMany(mappedBy = "order")
     private List<Item> items;
 }

@@ -1,5 +1,6 @@
 package com.unicarioca.projeto_poo.domain.item;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unicarioca.projeto_poo.domain.order.Order;
 import com.unicarioca.projeto_poo.domain.product.Product;
 import com.unicarioca.projeto_poo.domain.client.Client;
@@ -32,10 +33,12 @@ public class Item {
     @JoinColumn(name = "id_product")
     private Product product;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_client")
     private Client client;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_order")
     private Order order;
