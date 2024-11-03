@@ -1,8 +1,7 @@
 package com.unicarioca.projeto_poo.controller;
 
 
-import com.unicarioca.projeto_poo.domain.address.Address;
-import com.unicarioca.projeto_poo.domain.address.AddressRequestDTO;
+
 import com.unicarioca.projeto_poo.domain.category.ProductCategory;
 import com.unicarioca.projeto_poo.domain.category.ProductCategoryRequestDTO;
 import com.unicarioca.projeto_poo.service.CategoryService;
@@ -34,13 +33,13 @@ public class CategoryController
 
 
     @PutMapping("{idCategory}")
-    public ResponseEntity<ProductCategory> updateCard(@PathVariable UUID idCategory, @RequestBody ProductCategoryRequestDTO categoryRequestDTO){
+    public ResponseEntity<ProductCategory> updateCard(@PathVariable UUID idCategory, @RequestBody ProductCategoryRequestDTO categoryDTO){
         return ResponseEntity.ok(categoryService.updateCategory(idCategory, categoryDTO));
     }
 
-    @DeleteMapping("{idAddress}")
+    @DeleteMapping("{idCategory}")
     public ResponseEntity<Void> deleteCategory(@PathVariable UUID idCategory){
-        CategoryService.deleteCategory(idCategory);
+        categoryService.deleteCategory(idCategory);
         return ResponseEntity.noContent().build();
     }
 
