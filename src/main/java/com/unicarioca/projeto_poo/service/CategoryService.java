@@ -1,8 +1,5 @@
 package com.unicarioca.projeto_poo.service;
 
-
-
-
 import com.unicarioca.projeto_poo.domain.category.ProductCategory;
 import com.unicarioca.projeto_poo.domain.category.ProductCategoryRequestDTO;
 import com.unicarioca.projeto_poo.repository.CategoryRepository;
@@ -26,7 +23,7 @@ public class CategoryService
     {
         ProductCategory category = new ProductCategory();
 
-        category.setName(ProductCategoryRequestDTO.name());
+        category.setName(CategoryDTO.name());
 
         categoryRepository.save(category);
 
@@ -38,7 +35,7 @@ public class CategoryService
     {
         ProductCategory category = categoryRepository.findById(idCategory).get();
 
-        category.setName(categoryDTO.name);
+        category.setName(categoryDTO.name());
 
         categoryRepository.saveAndFlush(category);
 
