@@ -4,13 +4,19 @@ import com.unicarioca.projeto_poo.domain.category.ProductCategory;
 import com.unicarioca.projeto_poo.domain.item.Item;
 import com.unicarioca.projeto_poo.domain.order.Order;
 import com.unicarioca.projeto_poo.domain.product.Product;
-import com.unicarioca.projeto_poo.domain.reports.MostElementInListResponseDTO;
-import com.unicarioca.projeto_poo.domain.reports.MostSoldCategoryResponseDTO;
-import com.unicarioca.projeto_poo.domain.reports.MostSoldProductResponseDTO;
+import com.unicarioca.projeto_poo.domain.reports.*;
+import com.unicarioca.projeto_poo.repository.ReportRepository;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -18,6 +24,9 @@ public class ReportService {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private ReportRepository reportRepository;
 
     public MostSoldProductResponseDTO getMostSoldProductOfMonth(int month, int year){
         List<Product> products = getAllSoldProductsPerMonth(month, year);
@@ -195,8 +204,67 @@ public class ReportService {
             }
         }
 
-        MostElementInListResponseDTO elementDTO = new MostElementInListResponseDTO(major, qntMajor);
+        return new MostElementInListResponseDTO(major, qntMajor);
+    }
 
-        return elementDTO;
+//    public Report getReportById(UUID id){
+//        return reportRepository.findById(id).get();
+//    }
+//
+//    public Report createReport(ReportRequestDTO reportDTO){
+//        Report report = new Report();
+//
+//        report.setMonth(reportDTO.month());
+//        report.setYear(reportDTO.year());
+//        report.setFile_url(reportDTO.file_url());
+//
+//        reportRepository.save(report);
+//
+//        return report;
+//    }
+
+    public void generateReport(final String fileName, Integer month, Integer year){
+        try(var workbook = new XSSFWorkbook();
+            var outputStream = new FileOutputStream(fileName)){
+
+            var spreadSheet = workbook.createSheet("Reports");
+
+            int numberRow = 0;
+
+            addHeader(spreadSheet, numberRow++);
+
+            var row = spreadSheet.createRow(numberRow++);
+            addCell(row, 0, 1);
+            addCell(row, 0, getTotalAmountCollectedInMonth(month, year));
+
+            workbook.write(outputStream);
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("Arquivo não encontrado!");
+        } catch (IOException e) {
+            System.out.println("Erro ao processar o arquivo!");
+        }
+    }
+
+    private void addHeader(XSSFSheet spreadSheet, int numRow){
+        var row = spreadSheet.createRow(numRow);
+
+        addCell(row, 0, "Id");
+        addCell(row, 0, "Amount");
+    }
+
+    private void addCell(Row row, int column, int value){
+        Cell cell = row.createCell(column);
+        cell.setCellValue(value);
+    }
+
+    private void addCell(Row row, int column, float value){
+        Cell cell = row.createCell(column);
+        cell.setCellValue(value);
+    }
+
+    private void addCell(Row row, int column, String value){
+        Cell cell = row.createCell(column);
+        cell.setCellValue(value);
     }
 }
