@@ -14,8 +14,8 @@ public class CategoryService
 {
     @Autowired
     private CategoryRepository categoryRepository;
-    @Autowired
-    private ProductService productService;
+    //@Autowired
+    //private ProductService productService;
 
     public ProductCategory getCategoryById(UUID id) { return  categoryRepository.findById(id).get(); }
 
