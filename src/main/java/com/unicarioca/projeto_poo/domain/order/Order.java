@@ -52,4 +52,13 @@ public class Order {
 
     @OneToMany(mappedBy = "order")
     private List<Item> items;
+
+    public void setDiscount(Integer discount){
+        this.discount = discount;
+        setFinalPrice();
+    }
+
+    public void setFinalPrice(){
+        this.final_price = (this.price - (((float)this.discount/100) * this.price));
+    }
 }

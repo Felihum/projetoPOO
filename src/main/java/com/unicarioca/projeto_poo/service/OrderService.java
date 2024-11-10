@@ -39,11 +39,10 @@ public class OrderService {
         Address address = addressService.getAddressById(orderDTO.id_address());
         Card card = cardService.getCardById(orderDTO.id_card());
 
-        Float final_price = (orderDTO.price() - (((float)orderDTO.discount()/100) * orderDTO.price()));
+        //Float final_price = (orderDTO.price() - (((float)orderDTO.discount()/100) * orderDTO.price()));
 
         order.setPrice(orderDTO.price());
         order.setDiscount(orderDTO.discount());
-        order.setFinal_price(final_price);
         order.setDescription(orderDTO.description());
         order.setOrder_date(orderDTO.order_date());
         order.setStatus(OrderStatus.valueOf(orderDTO.status().toUpperCase()));
