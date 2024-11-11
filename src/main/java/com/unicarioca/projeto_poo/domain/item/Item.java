@@ -25,7 +25,7 @@ public class Item {
     @GeneratedValue
     private UUID id;
 
-    private BigDecimal total_price;
+    private Float total_price;
 
     private Integer quantity;
 
@@ -42,4 +42,10 @@ public class Item {
     @ManyToOne
     @JoinColumn(name = "id_order")
     private Order order;
+
+    public void setQuantity(Integer quantity){
+        this.quantity = quantity;
+
+        this.total_price = product.getFinal_price() * quantity;
+    }
 }
