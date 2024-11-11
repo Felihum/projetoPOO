@@ -4,6 +4,8 @@ import com.unicarioca.projeto_poo.domain.client.Client;
 import com.unicarioca.projeto_poo.domain.client.ClientCategory;
 import com.unicarioca.projeto_poo.domain.client.ClientEditRequestDTO;
 import com.unicarioca.projeto_poo.domain.client.ClientRequestDTO;
+import com.unicarioca.projeto_poo.exception.client.ClientEmailAlreadyExistsException;
+import com.unicarioca.projeto_poo.exception.ElementNotFoundException;
 import com.unicarioca.projeto_poo.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ public class ClientService {
     public Client getClientById(UUID id){
         return clientRepository.findById(id).get();
     }
+
     public Client getClientByEmail(String email){
         return clientRepository.findClientByEmail(email);
     }
@@ -26,7 +29,7 @@ public class ClientService {
     public Client createClient(ClientRequestDTO clientDTO){
         Client client = new Client();
 
-        if(!verifyExistingEmail(clientDTO.email()) && verifyClientData(clientDTO)){
+        if(!verifyExistingEmail(clientDTO.email())){
             client.setName(clientDTO.name());
             client.setEmail(clientDTO.email());
             client.setPassword(clientDTO.password());
@@ -35,25 +38,34 @@ public class ClientService {
             clientRepository.save(client);
 
             return client;
+        } else {
+            throw new ClientEmailAlreadyExistsException();
         }
-
-        return null;
     }
 
     public Client updateClient(UUID idClient, ClientEditRequestDTO clientDTO){
         Client client = clientRepository.findById(idClient).get();
 
-        client.setName(clientDTO.name());
-        client.setEmail(clientDTO.email());
-        client.setPassword(clientDTO.password());
+        if(!verifyExistingEmail(clientDTO.email())){
+            client.setName(clientDTO.name());
+            client.setEmail(clientDTO.email());
+            client.setPassword(clientDTO.password());
 
-        clientRepository.saveAndFlush(client);
+            clientRepository.saveAndFlush(client);
 
-        return client;
+            return client;
+        } else {
+            throw new ClientEmailAlreadyExistsException();
+        }
     }
 
     public void deleteClient(UUID id){
-        clientRepository.deleteById(id);
+
+        if(clientRepository.existsById(id)){
+            clientRepository.deleteById(id);
+        } else {
+            throw new ElementNotFoundException();
+        }
     }
 
     private Boolean verifyExistingEmail(String email){
@@ -61,10 +73,4 @@ public class ClientService {
 
         return client != null;
     }
-
-    private Boolean verifyClientData(ClientRequestDTO clientDTO){
-        return clientDTO.name() != null && clientDTO.email() != null && clientDTO.password() != null;
-    }
-
-
 }
