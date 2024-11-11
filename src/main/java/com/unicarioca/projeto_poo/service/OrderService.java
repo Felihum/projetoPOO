@@ -6,6 +6,7 @@ import com.unicarioca.projeto_poo.domain.client.Client;
 import com.unicarioca.projeto_poo.domain.order.Order;
 import com.unicarioca.projeto_poo.domain.order.OrderRequestDTO;
 import com.unicarioca.projeto_poo.domain.order.OrderStatus;
+import com.unicarioca.projeto_poo.exception.ElementNotFoundException;
 import com.unicarioca.projeto_poo.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,13 @@ public class OrderService {
     }
 
     public List<Order> getOrdersByMonth(int month, int year){
-        return orderRepository.findAllOrdersByMonth(month, year);
+        List<Order> orders = orderRepository.findAllOrdersByMonth(month, year);
+
+        if(!orders.isEmpty()){
+            return orders;
+        } else{
+            throw new ElementNotFoundException();
+        }
     }
 
     public Order createOrder(OrderRequestDTO orderDTO){
