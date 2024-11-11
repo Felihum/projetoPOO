@@ -23,15 +23,23 @@ public class Product {
     private UUID id;
 
     private String name;
-    private BigDecimal price;
-    private BigDecimal discount;
-    private BigDecimal final_price;
+    private Float price;
+    private Integer discount;
+    private Float final_price;
     private Integer storage_quantity;
     private String description;
     private String img_url;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_category")
     private ProductCategory category;
+
+    public void setDiscount(Integer discount){
+        this.discount = discount;
+        calculateFinalPrice();
+    }
+
+    public void calculateFinalPrice(){
+        this.final_price = (this.price - (((float)this.discount/100) * this.price));
+    }
 }

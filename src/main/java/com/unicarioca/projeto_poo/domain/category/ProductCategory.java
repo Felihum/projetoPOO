@@ -1,5 +1,6 @@
 package com.unicarioca.projeto_poo.domain.category;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unicarioca.projeto_poo.domain.product.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,7 @@ public class ProductCategory {
 
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "category")
     private List<Product> products;
 }
