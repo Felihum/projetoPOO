@@ -29,12 +29,12 @@ public class AddressController {
         return ResponseEntity.ok(addressService.createAddress(addressDTO));
     }
 
-    @PutMapping("{idAddress}")
+    @PutMapping("/{idAddress}")
     public ResponseEntity<Address> updateCard(@PathVariable UUID idAddress, @RequestBody AddressRequestDTO addressDTO){
         return ResponseEntity.ok(addressService.updateAddress(idAddress, addressDTO));
     }
 
-    @DeleteMapping("{idAddress}")
+    @DeleteMapping("/{idAddress}")
     public ResponseEntity<Void> deleteAddress(@PathVariable UUID idAddress){
         addressService.deleteAddress(idAddress);
         return ResponseEntity.noContent().build();

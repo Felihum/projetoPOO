@@ -27,12 +27,12 @@ public class CardController {
         return ResponseEntity.ok(cardService.createCard(cardDTO));
     }
 
-    @PutMapping("{idCard}")
+    @PutMapping("/{idCard}")
     public ResponseEntity<Card> updateCard(@PathVariable UUID idCard, @RequestBody CardEditRequestDTO cardDTO){
         return ResponseEntity.ok(cardService.updateCard(idCard, cardDTO));
     }
 
-    @DeleteMapping("{idCard}")
+    @DeleteMapping("/{idCard}")
     public ResponseEntity<Void> deleteCard(@PathVariable UUID idCard){
         cardService.deleteCard(idCard);
         return ResponseEntity.noContent().build();

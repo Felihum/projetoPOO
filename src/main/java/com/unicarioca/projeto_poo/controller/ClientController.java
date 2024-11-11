@@ -3,7 +3,7 @@ package com.unicarioca.projeto_poo.controller;
 import com.unicarioca.projeto_poo.domain.client.Client;
 import com.unicarioca.projeto_poo.domain.client.ClientEditRequestDTO;
 import com.unicarioca.projeto_poo.domain.client.ClientRequestDTO;
-import com.unicarioca.projeto_poo.exception.client.ClientEmailAlreadyExistsException;
+import com.unicarioca.projeto_poo.exception.ExistingElementException;
 import com.unicarioca.projeto_poo.exception.ElementNotFoundException;
 import com.unicarioca.projeto_poo.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +50,7 @@ public class ClientController {
     public ResponseEntity<Client> createClient(@RequestBody ClientRequestDTO clientDTO){
         try{
             return ResponseEntity.ok(clientService.createClient(clientDTO));
-        } catch (ClientEmailAlreadyExistsException e){
+        } catch (ExistingElementException e){
             return ResponseEntity.badRequest().header("message", "Email already registered").build();
         } catch (DataAccessException e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -67,7 +67,7 @@ public class ClientController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         } catch (DataAccessException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        } catch (ClientEmailAlreadyExistsException e){
+        } catch (ExistingElementException e){
             return ResponseEntity.badRequest().header("message", "Email already registered").build();
         }
     }

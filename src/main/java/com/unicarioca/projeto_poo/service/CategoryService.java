@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -14,10 +15,14 @@ public class CategoryService
 {
     @Autowired
     private CategoryRepository categoryRepository;
-    //@Autowired
-    //private ProductService productService;
 
-    public ProductCategory getCategoryById(UUID id) { return  categoryRepository.findById(id).get(); }
+    public ProductCategory getCategoryById(UUID id) {
+        return categoryRepository.findById(id).get();
+    }
+
+    public List<ProductCategory> getAllCategories(){
+        return categoryRepository.findAll();
+    }
 
     public ProductCategory createCategory(ProductCategoryRequestDTO CategoryDTO)
     {

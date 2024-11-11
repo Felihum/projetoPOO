@@ -4,7 +4,7 @@ import com.unicarioca.projeto_poo.domain.client.Client;
 import com.unicarioca.projeto_poo.domain.client.ClientCategory;
 import com.unicarioca.projeto_poo.domain.client.ClientEditRequestDTO;
 import com.unicarioca.projeto_poo.domain.client.ClientRequestDTO;
-import com.unicarioca.projeto_poo.exception.client.ClientEmailAlreadyExistsException;
+import com.unicarioca.projeto_poo.exception.ExistingElementException;
 import com.unicarioca.projeto_poo.exception.ElementNotFoundException;
 import com.unicarioca.projeto_poo.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +39,7 @@ public class ClientService {
 
             return client;
         } else {
-            throw new ClientEmailAlreadyExistsException();
+            throw new ExistingElementException();
         }
     }
 
@@ -55,7 +55,7 @@ public class ClientService {
 
             return client;
         } else {
-            throw new ClientEmailAlreadyExistsException();
+            throw new ExistingElementException();
         }
     }
 

@@ -6,9 +6,13 @@ import com.unicarioca.projeto_poo.domain.category.ProductCategory;
 import com.unicarioca.projeto_poo.domain.category.ProductCategoryRequestDTO;
 import com.unicarioca.projeto_poo.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 
@@ -20,24 +24,36 @@ public class CategoryController
     private CategoryService categoryService;
 
     @GetMapping("/findByID/{idCategory}")
-    public ResponseEntity<ProductCategory> getCardByid(@PathVariable UUID idCategory)
+    public ResponseEntity<ProductCategory> getCategoryById(@PathVariable UUID idCategory)
     {
-        return ResponseEntity.ok(categoryService.getCategoryById(idCategory));
+        try{
+            return ResponseEntity.ok(categoryService.getCategoryById(idCategory));
+        } catch (DataAccessException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        } catch (NoSuchElementException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<List<ProductCategory>> getAllCategories()
+    {
+        return ResponseEntity.ok(categoryService.getAllCategories());
     }
 
     @PostMapping("/")
-    public ResponseEntity<ProductCategory> createCard(@RequestBody ProductCategoryRequestDTO categoryDTO)
+    public ResponseEntity<ProductCategory> createCategory(@RequestBody ProductCategoryRequestDTO categoryDTO)
     {
         return ResponseEntity.ok(categoryService.createCategory(categoryDTO));
     }
 
 
-    @PutMapping("{idCategory}")
-    public ResponseEntity<ProductCategory> updateCard(@PathVariable UUID idCategory, @RequestBody ProductCategoryRequestDTO categoryDTO){
+    @PutMapping("/{idCategory}")
+    public ResponseEntity<ProductCategory> updateCategory(@PathVariable UUID idCategory, @RequestBody ProductCategoryRequestDTO categoryDTO){
         return ResponseEntity.ok(categoryService.updateCategory(idCategory, categoryDTO));
     }
 
-    @DeleteMapping("{idCategory}")
+    @DeleteMapping("/{idCategory}")
     public ResponseEntity<Void> deleteCategory(@PathVariable UUID idCategory){
         categoryService.deleteCategory(idCategory);
         return ResponseEntity.noContent().build();
