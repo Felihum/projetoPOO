@@ -2,6 +2,8 @@ package com.unicarioca.projeto_poo.service;
 
 import com.unicarioca.projeto_poo.domain.category.ProductCategory;
 import com.unicarioca.projeto_poo.domain.category.ProductCategoryRequestDTO;
+import com.unicarioca.projeto_poo.exception.ElementNotFoundException;
+import com.unicarioca.projeto_poo.exception.ExistingElementException;
 import com.unicarioca.projeto_poo.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,11 +26,14 @@ public class CategoryService
         return categoryRepository.findAll();
     }
 
-    public ProductCategory createCategory(ProductCategoryRequestDTO CategoryDTO)
+    public ProductCategory createCategory(ProductCategoryRequestDTO categoryDTO)
     {
         ProductCategory category = new ProductCategory();
+        if (verifyExistingCategory(categoryDTO.name())){
+            throw new ExistingElementException();
+        }
 
-        category.setName(CategoryDTO.name());
+        category.setName(categoryDTO.name());
 
         categoryRepository.save(category);
 
@@ -39,6 +44,9 @@ public class CategoryService
     public ProductCategory updateCategory(UUID idCategory , ProductCategoryRequestDTO categoryDTO)
     {
         ProductCategory category = categoryRepository.findById(idCategory).get();
+        if (verifyExistingCategory(categoryDTO.name())){
+            throw new ExistingElementException();
+        }
 
         category.setName(categoryDTO.name());
 
@@ -47,6 +55,17 @@ public class CategoryService
         return category;
     }
 
-    public void deleteCategory(UUID id) {categoryRepository.deleteById((id));}
+    public void deleteCategory(UUID id) {
+        if(categoryRepository.existsById(id)){
+            categoryRepository.deleteById(id);
+        } else {
+            throw new ElementNotFoundException();
+        }
+    }
 
+    public boolean verifyExistingCategory(String name) {
+        ProductCategory category = categoryRepository.findCategoryByName(name);
+
+        return category != null;
+    }
 }
