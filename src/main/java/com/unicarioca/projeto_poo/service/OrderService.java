@@ -7,9 +7,12 @@ import com.unicarioca.projeto_poo.domain.item.Item;
 import com.unicarioca.projeto_poo.domain.order.Order;
 import com.unicarioca.projeto_poo.domain.order.OrderRequestDTO;
 import com.unicarioca.projeto_poo.domain.order.OrderStatus;
+import com.unicarioca.projeto_poo.domain.product.Product;
+import com.unicarioca.projeto_poo.exception.ClientCardDontMatchException;
 import com.unicarioca.projeto_poo.exception.ElementNotFoundException;
 import com.unicarioca.projeto_poo.repository.ItemRepository;
 import com.unicarioca.projeto_poo.repository.OrderRepository;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +36,9 @@ public class OrderService {
     @Autowired
     private ItemService itemService;
 
+    @Autowired
+    private ProductService productService;
+
     public Order getOrderById(UUID id){
         return orderRepository.findById(id).get();
     }
@@ -52,6 +58,10 @@ public class OrderService {
         Client client = clientService.getClientById(orderDTO.id_client());
         Address address = addressService.getAddressById(orderDTO.id_address());
         Card card = cardService.getCardById(orderDTO.id_card());
+
+        if(!client.getCards().contains(card)){
+            throw new ClientCardDontMatchException();
+        }
 
         List<Item> items = new ArrayList<>();
 
@@ -85,6 +95,14 @@ public class OrderService {
 
     public Order updateOrder(UUID idOrder, String orderStatus){
         Order order = orderRepository.findById(idOrder).get();
+
+        if(OrderStatus.valueOf(orderStatus.toUpperCase()) == OrderStatus.COMPLETED){
+            for (Item item : order.getItems()){
+                Integer newQuantity = item.getProduct().getStorage_quantity() - item.getQuantity();
+
+                productService.updateProductStorageQuantity(item.getProduct().getId(), newQuantity);
+            }
+        }
 
         order.setStatus(OrderStatus.valueOf(orderStatus.toUpperCase()));
 

@@ -2,6 +2,7 @@ package com.unicarioca.projeto_poo.controller;
 
 import com.unicarioca.projeto_poo.domain.order.Order;
 import com.unicarioca.projeto_poo.domain.order.OrderRequestDTO;
+import com.unicarioca.projeto_poo.exception.ClientCardDontMatchException;
 import com.unicarioca.projeto_poo.exception.ExistingElementException;
 import com.unicarioca.projeto_poo.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,8 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         } catch (NoSuchElementException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (ClientCardDontMatchException e){
+            return ResponseEntity.badRequest().header("message", "The client doesn't have this card!").build();
         }
     }
 

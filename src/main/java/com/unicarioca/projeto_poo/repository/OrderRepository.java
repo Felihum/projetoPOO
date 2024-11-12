@@ -12,6 +12,6 @@ import java.util.UUID;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, UUID> {
 
-    @Query("SELECT o FROM Order o WHERE EXTRACT(MONTH FROM o.order_date) = :month AND EXTRACT(YEAR FROM o.order_date) = :year")
+    @Query("SELECT o FROM Order o WHERE o.status LIKE 'COMPLETED' AND EXTRACT(MONTH FROM o.order_date) = :month AND EXTRACT(YEAR FROM o.order_date) = :year")
     List<Order> findAllOrdersByMonth(@Param("month") int month, @Param("year") int year);
 }
