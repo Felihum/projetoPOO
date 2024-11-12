@@ -7,9 +7,11 @@ import com.unicarioca.projeto_poo.domain.order.Order;
 import com.unicarioca.projeto_poo.domain.product.Product;
 import com.unicarioca.projeto_poo.exception.ElementNotFoundException;
 import com.unicarioca.projeto_poo.repository.ItemRepository;
+import com.unicarioca.projeto_poo.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -22,10 +24,14 @@ public class ItemService {
     @Autowired
     private ProductService productService;
     @Autowired
-    private OrderService orderService;
+    private OrderRepository orderRepository;
 
     public Item getItemById(UUID idItem){
         return itemRepository.findById(idItem).get();
+    }
+
+    public List<Item> getAllItemsByOrderId(UUID idOrder){
+        return itemRepository.findAllItemsByOrderId(idOrder);
     }
 
     public Item createItem(ItemRequestDTO itemDTO){
@@ -34,9 +40,9 @@ public class ItemService {
         Client client = clientService.getClientById(itemDTO.id_client());
         Product product = productService.getProductById(itemDTO.id_product());
 
+        item.setProduct(product);
         item.setQuantity(itemDTO.quantity());
         item.setClient(client);
-        item.setProduct(product);
 
         itemRepository.save(item);
 
@@ -44,13 +50,14 @@ public class ItemService {
     }
 
     public Item updateOrderOfItem(UUID idItem, UUID idOrder){
-        Item item = itemRepository.findById(idItem).get();
 
-        Order order = orderService.getOrderById(idOrder);
-
-        if(order == null){
+        if(!orderRepository.existsById(idOrder)){
             throw new ElementNotFoundException();
         }
+
+        Item item = itemRepository.findById(idItem).get();
+
+        Order order = orderRepository.findById(idOrder).get();
 
         item.setOrder(order);
 

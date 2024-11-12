@@ -56,6 +56,8 @@ public class OrderController {
             return ResponseEntity.badRequest().header("message", "Product already registered!").build();
         } catch (DataAccessException e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        } catch (NoSuchElementException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 

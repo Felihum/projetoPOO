@@ -104,7 +104,7 @@ public class ProductService {
     }
 
     public boolean verifyExistingProduct(String name){
-        Product product = getProductByName(name);
+        Product product = productRepository.findProductByName(name);
 
         return product != null;
     }

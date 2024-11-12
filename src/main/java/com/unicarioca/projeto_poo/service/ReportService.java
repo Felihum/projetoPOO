@@ -5,18 +5,9 @@ import com.unicarioca.projeto_poo.domain.item.Item;
 import com.unicarioca.projeto_poo.domain.order.Order;
 import com.unicarioca.projeto_poo.domain.product.Product;
 import com.unicarioca.projeto_poo.domain.reports.*;
-import com.unicarioca.projeto_poo.repository.ReportRepository;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -25,42 +16,36 @@ public class ReportService {
     @Autowired
     private OrderService orderService;
 
-    @Autowired
-    private ReportRepository reportRepository;
-
     public MostSoldProductResponseDTO getMostSoldProductOfMonth(int month, int year){
         List<Product> products = getAllSoldProductsPerMonth(month, year);
-//        int qntMajor = 0;
-//        int qntAux = 0;
-//        Product major = new Product();
-//        Product productAux;
-//        for(int i = 0; i < products.size(); i++){
-//            productAux = products.get(i);
-//            qntAux++;
-//            if(major == null){
-//                major = productAux;
-//                qntMajor++;
-//            } else{
-//                if(productAux == major){
-//                    qntMajor++;
-//                } else{
-//                    if(productAux == products.get(i-1)){
-//                        if(qntAux > qntMajor){
-//                            major = productAux;
-//                            qntMajor = qntAux;
-//                        }
-//                    } else{
-//                        qntAux = 1;
-//                    }
-//                }
-//            }
-//        }
-//
-//        MostSaledProductResponseDTO productResponseDTO = new MostSaledProductResponseDTO(major, qntMajor);
-//
-//        return productResponseDTO;
 
-        return (MostSoldProductResponseDTO) getMostElementInList(products);
+        int qntMajor = 0;
+        int qntAux = 0;
+        Product major = null;
+        Product productAux;
+        for(int i = 0; i < products.size(); i++){
+            productAux = products.get(i);
+            qntAux++;
+            if(major == null){
+                major = productAux;
+                qntMajor++;
+            } else{
+                if(productAux == major){
+                    qntMajor++;
+                } else{
+                    if(productAux == products.get(i-1)){
+                        if(qntAux > qntMajor){
+                            major = productAux;
+                            qntMajor = qntAux;
+                        }
+                    } else{
+                        qntAux = 1;
+                    }
+                }
+            }
+        }
+
+        return new MostSoldProductResponseDTO(major, qntMajor);
     }
 
     public List<Product> getAllSoldProductsPerMonth(int month, int year){
@@ -120,34 +105,33 @@ public class ReportService {
 
         Collections.sort(categories, Comparator.comparing(c -> c.getName()));
 
-//        int qntMajor = 0;
-//        int qntAux = 0;
-//        ProductCategory major = new ProductCategory();
-//        ProductCategory categoryAux;
-//        for(int i = 0; i < categories.size(); i++){
-//            categoryAux = categories.get(i);
-//            qntAux++;
-//            if(major == null){
-//                major = categoryAux;
-//                qntMajor++;
-//            } else{
-//                if(categoryAux == major){
-//                    qntMajor++;
-//                } else{
-//                    if(categoryAux == categories.get(i-1)){
-//                        if(qntAux > qntMajor){
-//                            major = categoryAux;
-//                            qntMajor = qntAux;
-//                        }
-//                    } else{
-//                        qntAux = 1;
-//                    }
-//                }
-//            }
-//        }
+        int qntMajor = 0;
+        int qntAux = 0;
+        ProductCategory major = null;
+        ProductCategory categoryAux;
+        for(int i = 0; i < categories.size(); i++){
+            categoryAux = categories.get(i);
+            qntAux++;
+            if(major == null){
+                major = categoryAux;
+                qntMajor++;
+            } else{
+                if(categoryAux == major){
+                    qntMajor++;
+                } else{
+                    if(categoryAux == categories.get(i-1)){
+                        if(qntAux > qntMajor){
+                            major = categoryAux;
+                            qntMajor = qntAux;
+                        }
+                    } else{
+                        qntAux = 1;
+                    }
+                }
+            }
+        }
 
-        return (MostSoldCategoryResponseDTO) getMostElementInList(categories);
-
+        return new MostSoldCategoryResponseDTO(major, qntMajor);
     }
 
     public Integer getNumberOfSalesPerCategory(ProductCategory category, int month, int year){
@@ -180,7 +164,7 @@ public class ReportService {
     private Object getMostElementInList(List list){
         int qntMajor = 0;
         int qntAux = 0;
-        Object major = new Object();
+        Object major = null;
         Object objAux;
         for(int i = 0; i < list.size(); i++){
             objAux = list.get(i);
@@ -205,66 +189,5 @@ public class ReportService {
         }
 
         return new MostElementInListResponseDTO(major, qntMajor);
-    }
-
-//    public Report getReportById(UUID id){
-//        return reportRepository.findById(id).get();
-//    }
-//
-//    public Report createReport(ReportRequestDTO reportDTO){
-//        Report report = new Report();
-//
-//        report.setMonth(reportDTO.month());
-//        report.setYear(reportDTO.year());
-//        report.setFile_url(reportDTO.file_url());
-//
-//        reportRepository.save(report);
-//
-//        return report;
-//    }
-
-    public void generateReport(final String fileName, Integer month, Integer year){
-        try(var workbook = new XSSFWorkbook();
-            var outputStream = new FileOutputStream(fileName)){
-
-            var spreadSheet = workbook.createSheet("Reports");
-
-            int numberRow = 0;
-
-            addHeader(spreadSheet, numberRow++);
-
-            var row = spreadSheet.createRow(numberRow++);
-            addCell(row, 0, 1);
-            addCell(row, 0, getTotalAmountCollectedInMonth(month, year));
-
-            workbook.write(outputStream);
-        }
-        catch (FileNotFoundException e) {
-            System.out.println("Arquivo não encontrado!");
-        } catch (IOException e) {
-            System.out.println("Erro ao processar o arquivo!");
-        }
-    }
-
-    private void addHeader(XSSFSheet spreadSheet, int numRow){
-        var row = spreadSheet.createRow(numRow);
-
-        addCell(row, 0, "Id");
-        addCell(row, 0, "Amount");
-    }
-
-    private void addCell(Row row, int column, int value){
-        Cell cell = row.createCell(column);
-        cell.setCellValue(value);
-    }
-
-    private void addCell(Row row, int column, float value){
-        Cell cell = row.createCell(column);
-        cell.setCellValue(value);
-    }
-
-    private void addCell(Row row, int column, String value){
-        Cell cell = row.createCell(column);
-        cell.setCellValue(value);
     }
 }

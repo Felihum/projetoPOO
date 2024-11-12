@@ -3,7 +3,7 @@ package com.unicarioca.projeto_poo.exception;
 public class ElementNotFoundException extends RuntimeException{
 
     public ElementNotFoundException(){
-        super("No such client found!");
+        super("No such element found!");
     }
 
     public ElementNotFoundException(String message){
