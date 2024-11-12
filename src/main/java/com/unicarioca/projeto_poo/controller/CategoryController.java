@@ -4,6 +4,8 @@ package com.unicarioca.projeto_poo.controller;
 
 import com.unicarioca.projeto_poo.domain.category.ProductCategory;
 import com.unicarioca.projeto_poo.domain.category.ProductCategoryRequestDTO;
+import com.unicarioca.projeto_poo.exception.ElementNotFoundException;
+import com.unicarioca.projeto_poo.exception.ExistingElementException;
 import com.unicarioca.projeto_poo.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -44,19 +46,42 @@ public class CategoryController
     @PostMapping("/")
     public ResponseEntity<ProductCategory> createCategory(@RequestBody ProductCategoryRequestDTO categoryDTO)
     {
-        return ResponseEntity.ok(categoryService.createCategory(categoryDTO));
+        try {
+            return ResponseEntity.ok(categoryService.createCategory(categoryDTO));
+        }catch (ExistingElementException e){
+            return ResponseEntity.badRequest().header("message", "Category already registered").build();
+        } catch (DataAccessException e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+
+        }
     }
 
 
     @PutMapping("/{idCategory}")
     public ResponseEntity<ProductCategory> updateCategory(@PathVariable UUID idCategory, @RequestBody ProductCategoryRequestDTO categoryDTO){
-        return ResponseEntity.ok(categoryService.updateCategory(idCategory, categoryDTO));
+        try{
+            return ResponseEntity.ok(categoryService.updateCategory(idCategory, categoryDTO));
+        }catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        } catch (DataAccessException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        } catch (ExistingElementException e){
+            return ResponseEntity.badRequest().header("message", "Category already registered").build();
+        }
     }
 
     @DeleteMapping("/{idCategory}")
     public ResponseEntity<Void> deleteCategory(@PathVariable UUID idCategory){
-        categoryService.deleteCategory(idCategory);
-        return ResponseEntity.noContent().build();
+        try{
+            categoryService.deleteCategory(idCategory);
+            return ResponseEntity.noContent().build();
+        }catch (DataAccessException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        } catch (ElementNotFoundException e){
+            return ResponseEntity.notFound().header("message", "The id don't match with any category registered!").build();
+        }
     }
 
 
