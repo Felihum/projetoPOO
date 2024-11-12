@@ -160,34 +160,4 @@ public class ReportService {
 
         return amount;
     }
-
-    private Object getMostElementInList(List list){
-        int qntMajor = 0;
-        int qntAux = 0;
-        Object major = null;
-        Object objAux;
-        for(int i = 0; i < list.size(); i++){
-            objAux = list.get(i);
-            qntAux++;
-            if(major == null){
-                major = objAux;
-                qntMajor++;
-            } else{
-                if(objAux == major){
-                    qntMajor++;
-                } else{
-                    if(objAux == list.get(i-1)){
-                        if(qntAux > qntMajor){
-                            major = objAux;
-                            qntMajor = qntAux;
-                        }
-                    } else{
-                        qntAux = 1;
-                    }
-                }
-            }
-        }
-
-        return new MostElementInListResponseDTO(major, qntMajor);
-    }
 }
