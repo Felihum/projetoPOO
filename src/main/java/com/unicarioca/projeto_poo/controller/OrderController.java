@@ -7,6 +7,7 @@ import com.unicarioca.projeto_poo.exception.ExistingElementException;
 import com.unicarioca.projeto_poo.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -64,8 +65,8 @@ public class OrderController {
         }
     }
 
-    @PutMapping("/{idOrder}")
-    private ResponseEntity<Order> updateOrder(@PathVariable UUID idOrder, @RequestParam String orderStatus){
+    @PutMapping("/{idOrder}/{orderStatus}")
+    private ResponseEntity<Order> updateOrder(@PathVariable UUID idOrder, @PathVariable String orderStatus){
         try{
             return ResponseEntity.ok(orderService.updateOrder(idOrder, orderStatus));
         } catch (NoSuchElementException e) {
