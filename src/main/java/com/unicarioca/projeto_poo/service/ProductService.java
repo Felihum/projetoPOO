@@ -64,9 +64,9 @@ public class ProductService {
 
     public Product updateProduct(UUID idProduct, ProductRequestDTO productDTO){
 
-        if(verifyExistingProduct(productDTO.name())){
-            throw new ExistingElementException();
-        }
+//        if(verifyExistingProduct(productDTO.name())){
+//            throw new ExistingElementException();
+//        }
 
         Product product = productRepository.findById(idProduct).get();
 

@@ -62,12 +62,15 @@ public class ProductController {
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         } catch (IllegalArgumentException e) {
+            System.out.println(e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         } catch (DataAccessException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        } catch (ExistingElementException e){
-            return ResponseEntity.badRequest().header("message", "Product already registered!").build();
         }
+//        catch (ExistingElementException e){
+//            System.out.println(e);
+//            return ResponseEntity.badRequest().header("message", "Product already registered!").build();
+//        }
     }
 
     @PutMapping("/updateStorageQuantity/{idProduct}")
